@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.1",
     "fontsource-roboto": "^3.0.3",
+    "node-fetch": "^2.6.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
@@ -39,7 +40,8 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.1.10",
-    "jest-environment-jsdom-sixteen": "^1.0.3"
+    "jest-environment-jsdom-sixteen": "^1.0.3",
+    "jest-fetch-mock": "^3.0.3"
   },
   "jest": {
     "collectCoverageFrom": [

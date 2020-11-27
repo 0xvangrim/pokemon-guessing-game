@@ -12,7 +12,7 @@
   justify-content: center;
 }
 
-.login-wrapper {
+.pokemon-wrapper {
   max-width: 40vw;  
   margin-top: 240px;
   display:flex;
@@ -29,5 +29,5 @@
   text-align: center;
   display:flex;
   flex-direction: column;
-  min-width: 600px;
+  min-width: 25vw;
 }

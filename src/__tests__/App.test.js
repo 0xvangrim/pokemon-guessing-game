@@ -1,7 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "../App";
-import Pokemon from "../Pokemon";
 
 describe("When everything is ok", () => {
   beforeEach(() => {
@@ -26,11 +25,13 @@ describe("When user submits a name", () => {
     render(<App />);
   });
   test("should render a new view", () => {
-    userEvent.type(screen.getByRole("textbox"), 'Kenny');
-    expect(screen.getByRole('textbox')).toHaveValue('Kenny')
+    const name = "Kenny";
+    userEvent.type(screen.getByRole("textbox"), name);
+    expect(screen.getByRole("textbox")).toHaveValue(name);
     userEvent.click(screen.getByRole("button"));
-    screen.debug()
-    expect(screen.getByText('Hello World')).toBeInTheDocument();
+    expect(
+      screen.getByText(/Score/)
+    ).toBeInTheDocument();
   });
 });
 
