@@ -35,7 +35,7 @@ function Pokemon({ pokemonTrainer }) {
 
   const updateScore = (guessedPokemonName) => {
     if (guessedPokemonName === pokemonList[pokemonList.length - 1].name) {
-      setPokemonTrainerObject(prev => ({...prev, score: pokemonTrainerObject['score']+=5 || 10 }))
+       setPokemonTrainerObject(prev => ({...prev, score: pokemonTrainerObject['score'] + 10 || 10 }))
     } 
   };
 
