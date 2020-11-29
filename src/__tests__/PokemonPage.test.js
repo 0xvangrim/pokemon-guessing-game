@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import Pokemon from "../PokemonPage";
+import Pokemon from "../components/PokemonPage";
 
 const pokemonTrainerObject = {
   name: "Kenny",
@@ -21,12 +21,13 @@ const pokemonObject = {
 };
 
 describe("When user first sees the pokemon page", () => {
-  test("should see the name and the score", async () => {
+  test("should see the name and the score", () => {
     render(<Pokemon pokemonTrainer={pokemonTrainerObject} />);
     expect(screen.getByText(/NAME/)).toBeInTheDocument();
     expect(screen.getByText(/SCORE/)).toBeInTheDocument();
     expect(screen.getByText(/TIME LEFT/)).toBeInTheDocument();
     expect(screen.getByRole("textbox")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("E.g. Charizard")).toBeInTheDocument();
   });
 
   test("should see an image on mount", async () => {
@@ -37,8 +38,7 @@ describe("When user first sees the pokemon page", () => {
     const imageMount = await screen.findByRole("img");
     expect(imageMount).toBeInTheDocument();
   });
-  afterAll(() => fetch.mockClear())
-
+  afterAll(() => fetch.mockClear());
 });
 
 describe("When user guesses a Pokemon", () => {
@@ -51,8 +51,7 @@ describe("When user guesses a Pokemon", () => {
     render(<Pokemon pokemonTrainer={pokemonTrainerObject} />);
     userEvent.type(await screen.findByRole("textbox"), "Hello");
     userEvent.click(screen.getByRole("button"));
-    await screen.findByRole("img");
-    expect(screen.getByRole("img")).toBeInTheDocument();
+    expect(await screen.findByRole("img")).toBeInTheDocument();
   });
   test("should have their score updated if they guess the name correctly", async () => {
     const guessedPokemon = "Pikachu";
@@ -73,25 +72,29 @@ describe("When user guesses a Pokemon", () => {
     userEvent.click(screen.getByRole("button"));
     expect(await screen.findByText(/SCORE: 0/)).toBeInTheDocument();
   });
-  afterAll(() => fetch.mockClear())
+  afterAll(() => fetch.mockClear());
 });
 
 describe("When the game ends", () => {
-  beforeEach(() =>
+  beforeEach(() => {
     jest.spyOn(global, "fetch").mockResolvedValue({
       json: () => Promise.resolve(pokemonObject),
-    })
-  );
+    });
+    jest.useFakeTimers();
+  });
+  
   test("should be presented with a screen that shows score when timer hits 0", async () => {
     const guessedPokemon = "Pikachu";
-    jest.useFakeTimers();
     render(<Pokemon pokemonTrainer={pokemonTrainerObject} />);
     await screen.findByRole("img");
     userEvent.type(await screen.findByRole("textbox"), guessedPokemon);
     userEvent.click(screen.getByRole("button"));
-    await waitFor(() => jest.advanceTimersByTime(60000));
-    expect(screen.getByText(/GAME OVER/)).toBeInTheDocument();
+    await waitFor(() => jest.advanceTimersByTime(61000));
+    expect(await screen.findByText(/GAME OVER/)).toBeInTheDocument();
   });
 
-  afterAll(() => jest.useRealTimers());
+  afterAll(() => {
+    fetch.mockClear();
+    jest.useRealTimers();
+  });
 });

@@ -1,6 +1,6 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
-import Pokemon from "./PokemonPage";
+import React, { useState } from "react";
+import Pokemon from "./components/PokemonPage";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
