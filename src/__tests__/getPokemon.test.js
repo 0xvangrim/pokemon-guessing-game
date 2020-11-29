@@ -19,7 +19,7 @@ describe.only("makes sure our fetch function works properly", () => {
     })
   );
   test("should be be called only 1 time and return an object based on the URL", async () => {
-    const pokemonFetcher = await getPokemon(undefined, 1);
+    const pokemonFetcher = await getPokemon(1);
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(pokemonFetcher).toEqual({
       image:
@@ -30,8 +30,8 @@ describe.only("makes sure our fetch function works properly", () => {
   });
 
   test("should be in the catch block when the fetch fails", async () => {
-    fetch.mockImplementationOnce(() => Promise.reject(new Error()));
-    const pokemonFetcher = await getPokemon(undefined, 1);
+    fetch.mockImplementationOnce(() => Promise.reject("The API is down"));
+    const pokemonFetcher = await getPokemon(1);
     expect(pokemonFetcher).toEqual(undefined);
   });
 

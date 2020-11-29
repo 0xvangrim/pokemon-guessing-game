@@ -10,25 +10,30 @@ function Pokemon({ pokemonTrainer }) {
   );
   const [pokemonList, setPokemonList] = useState([]);
   const [value, setValue] = useState("");
-  const [countdown, setCountdown] = useState(10);
+  const [countdown, setCountdown] = useState(60);
   const pokemonRef = useRef(null);
   const countDownRef = useRef(null);
+  const isMountedRef = useRef(null)
 
   useEffect(() => {
+    isMountedRef.current = true
     async function fetchData() {
-      pokemonRef.current = await getPokemon(undefined, pokemonId);
+      pokemonRef.current = await getPokemon(pokemonId);
+      if(isMountedRef.current) {
       setPokemonList((prev) => [
         ...prev,
         { name: pokemonRef.current.name, image: pokemonRef.current.image },
       ]);
     }
+    }
     fetchData();
+    return () => isMountedRef.current = false
   }, []);
 
   useEffect(() => {
-    let mounted = true;
+    isMountedRef.current = true;
     countDownRef.current = setTimeout(() => {
-      if(mounted) { 
+      if(isMountedRef.current) { 
       setCountdown(countdown - 1);
       }
     }, 1000);
@@ -36,7 +41,7 @@ function Pokemon({ pokemonTrainer }) {
       clearTimeout(countDownRef.current);
       setCountdown(0)
     }
-    return () => mounted = false
+    return () => isMountedRef.current = false
   }, [countdown]);
 
   const handleChange = (e) => setValue(e.target.value);
@@ -46,7 +51,7 @@ function Pokemon({ pokemonTrainer }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    pokemonRef.current = await getPokemon(undefined, pokemonId);
+    pokemonRef.current = await getPokemon(pokemonId);
     setPokemonList((prev) => [
       ...prev,
       { name: pokemonRef.current.name, image: pokemonRef.current.image },
@@ -56,7 +61,8 @@ function Pokemon({ pokemonTrainer }) {
   };
 
   const updateScore = (guessedPokemonName) => {
-    if (guessedPokemonName === pokemonList[pokemonList.length - 1].name) {
+    const parsedPokemonName = guessedPokemonName.toLowerCase()
+    if (parsedPokemonName === pokemonList[pokemonList.length - 1].name) {
       setPokemonTrainerObject((prev) => ({ ...prev, score: prev.score + 10 }));
     }
   };

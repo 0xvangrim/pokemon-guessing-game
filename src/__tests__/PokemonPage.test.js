@@ -9,7 +9,7 @@ const pokemonTrainerObject = {
 };
 
 const pokemonObject = {
-  name: "Pikachu",
+  name: "pikachu",
   sprites: {
     other: {
       "official-artwork": {
@@ -54,7 +54,7 @@ describe("When user guesses a Pokemon", () => {
     expect(await screen.findByRole("img")).toBeInTheDocument();
   });
   test("should have their score updated if they guess the name correctly", async () => {
-    const guessedPokemon = "Pikachu";
+    const guessedPokemon = "pikachu";
     render(<Pokemon pokemonTrainer={pokemonTrainerObject} />);
     expect(screen.getByText(/SCORE: 0/)).toBeInTheDocument();
     await screen.findByRole("img");
@@ -62,6 +62,16 @@ describe("When user guesses a Pokemon", () => {
     userEvent.click(screen.getByRole("button"));
     expect(await screen.findByText(/SCORE: 10/)).toBeInTheDocument();
   });
+
+  test("should not matter if it's uppercase or lowercase", async () => {
+    const guessedPokemon = "PIKACHU"
+    render(<Pokemon pokemonTrainer={pokemonTrainerObject} />);
+    expect(screen.getByText(/SCORE: 0/)).toBeInTheDocument();
+    await screen.findByRole("img");
+    userEvent.type(await screen.findByRole("textbox"), guessedPokemon);
+    userEvent.click(screen.getByRole("button"));
+    expect(await screen.findByText(/SCORE: 10/)).toBeInTheDocument();  
+  })
 
   test("should not have their score updated if guessed incorrectly", async () => {
     const guessedPokemon = "Charizard";
