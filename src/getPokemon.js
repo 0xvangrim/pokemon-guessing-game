@@ -1,10 +1,10 @@
 const pokemonApiUrl = 'https://pokeapi.co/api/v2/pokemon/';
 
-export const getPokemon = async (url = pokemonApiUrl) => {
+
+export const getPokemon = async (url = pokemonApiUrl, id) => {
 
   //function that makes the API call and fetches our pokemon
-  const randomId = () => Math.floor(Math.random() * 151 + 1);
-  const id = randomId();
+
   let pokemon = { name: "", image: "" };
   try {
     const result = await fetch(url+id);

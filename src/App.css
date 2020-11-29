@@ -1,11 +1,10 @@
 .App {
   text-align: center;
-  font-family: "Roboto";
 }
 
 
 .screen-wrapper {
-  background-color: #282c34;
+  background: linear-gradient(to bottom right,#024,#402);  
   min-height: 100vh;
   display: flex;
   color: white;
@@ -13,21 +12,36 @@
 }
 
 .pokemon-wrapper {
-  max-width: 40vw;  
-  margin-top: 240px;
+  max-width: 40vw;
+  margin-top: 150px;
   display:flex;
   flex-direction: column;
   align-items: center;
 
 }
 
-.headline {
-  text-align: center;
+.img-wrapper {
+  border: 1px solid yellow;
+  border-radius: 10px;
+}
+
+.headline-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  min-width: 100%; 
 }
 
 .input-wrapper{
   text-align: center;
   display:flex;
   flex-direction: column;
-  min-width: 25vw;
+  min-width: 20vw;
+  min-height: 100px;
+  margin-top: 20px;
+}
+
+.button-wrapper {
+  margin-top: 20px;
 }

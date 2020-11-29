@@ -3,140 +3,95 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Pokemon from "../PokemonPage";
 
-const pokemonTrainer = {
+const pokemonTrainerObject = {
   name: "Kenny",
   score: 0,
 };
 
-const pokemonList = [
-  {
-    name: "Pikachu",
-    sprites: {
-      other: {
-        "official-artwork": {
-          front_default:
-            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-        },
+const pokemonObject = {
+  name: "Pikachu",
+  sprites: {
+    other: {
+      "official-artwork": {
+        front_default:
+          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
       },
     },
   },
-  {
-    name: "Charizard",
-    sprites: {
-      other: {
-        "official-artwork": {
-          front_default:
-            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-        },
-      },
-    },
-  },
-];
+};
 
 describe("When user first sees the pokemon page", () => {
   test("should see the name and the score", async () => {
-    render(<Pokemon pokemonTrainer={pokemonTrainer} />);
-    expect(screen.getByText(/Name/)).toBeInTheDocument();
-    expect(screen.getByText(/Score/)).toBeInTheDocument();
-  });
-
-  test("should see the textbox", async () => {
-    render(<Pokemon pokemonTrainer={pokemonTrainer} />);
+    render(<Pokemon pokemonTrainer={pokemonTrainerObject} />);
+    expect(screen.getByText(/NAME/)).toBeInTheDocument();
+    expect(screen.getByText(/SCORE/)).toBeInTheDocument();
+    expect(screen.getByText(/TIME LEFT/)).toBeInTheDocument();
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
 
   test("should see an image on mount", async () => {
     jest.spyOn(global, "fetch").mockResolvedValue({
-      json: () =>
-        Promise.resolve({
-          name: "Pikachu",
-          sprites: {
-            other: {
-              "official-artwork": {
-                front_default:
-                  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-              },
-            },
-          },
-        }),
+      json: () => Promise.resolve(pokemonObject),
     });
-    render(<Pokemon pokemonTrainer={pokemonTrainer} />);
-    const imageMount = await waitFor(() => screen.getByRole("img"));
+    render(<Pokemon pokemonTrainer={pokemonTrainerObject} />);
+    const imageMount = await screen.findByRole("img");
     expect(imageMount).toBeInTheDocument();
   });
+  afterAll(() => fetch.mockClear())
+
 });
 
-
 describe("When user guesses a Pokemon", () => {
-  test("should update image when user hits submit", async () => {
+  beforeEach(() =>
     jest.spyOn(global, "fetch").mockResolvedValue({
-      json: () =>
-        Promise.resolve({
-          name: "Pikachu",
-          sprites: {
-            other: {
-              "official-artwork": {
-                front_default:
-                  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-              },
-            },
-          },
-        }),
-    });
-    render(<Pokemon pokemonTrainer={pokemonTrainer} />);
+      json: () => Promise.resolve(pokemonObject),
+    })
+  );
+  test("should update image when user hits submit", async () => {
+    render(<Pokemon pokemonTrainer={pokemonTrainerObject} />);
     userEvent.type(await screen.findByRole("textbox"), "Hello");
     userEvent.click(screen.getByRole("button"));
-    await waitFor(() => screen.getByRole("img"));
+    await screen.findByRole("img");
     expect(screen.getByRole("img")).toBeInTheDocument();
   });
   test("should have their score updated if they guess the name correctly", async () => {
     const guessedPokemon = "Pikachu";
-    jest.spyOn(global, "fetch").mockResolvedValue({
-      json: () =>
-        Promise.resolve({
-          name: "Pikachu",
-          sprites: {
-            other: {
-              "official-artwork": {
-                front_default:
-                  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-              },
-            },
-          },
-        }),
-    });
-    render(<Pokemon pokemonTrainer={pokemonTrainer} />);
-    expect(screen.getByText(/Score: 0/)).toBeInTheDocument();
-    await waitFor(() => screen.findByRole("img"));
+    render(<Pokemon pokemonTrainer={pokemonTrainerObject} />);
+    expect(screen.getByText(/SCORE: 0/)).toBeInTheDocument();
+    await screen.findByRole("img");
     userEvent.type(await screen.findByRole("textbox"), guessedPokemon);
-    await waitFor(() => userEvent.click(screen.getByRole("button")))
-    await waitFor(() => expect(screen.getByText(/Score: 10/)).toBeInTheDocument())
+    userEvent.click(screen.getByRole("button"));
+    expect(await screen.findByText(/SCORE: 10/)).toBeInTheDocument();
   });
-  
+
   test("should not have their score updated if guessed incorrectly", async () => {
-    const guessedPokemon = 'Charizard'
-
-    jest.spyOn(global, "fetch").mockResolvedValue({
-      json: () =>
-        Promise.resolve({
-          name: "Pikachu",
-          sprites: {
-            other: {
-              "official-artwork": {
-                front_default:
-                  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-              },
-            },
-          },
-        }),
-    });
-    render(<Pokemon pokemonTrainer={pokemonTrainer} />);
-    expect(screen.getByText(/Score: 0/)).toBeInTheDocument();
-    await waitFor(() => screen.findByRole("img"));
+    const guessedPokemon = "Charizard";
+    render(<Pokemon pokemonTrainer={pokemonTrainerObject} />);
+    expect(screen.getByText(/SCORE: 0/)).toBeInTheDocument();
+    await screen.findByRole("img");
     userEvent.type(await screen.findByRole("textbox"), guessedPokemon);
-    await waitFor(() => userEvent.click(screen.getByRole("button")))
-    await waitFor(() => expect(screen.getByText(/Score: 0/)).toBeInTheDocument())
-
+    userEvent.click(screen.getByRole("button"));
+    expect(await screen.findByText(/SCORE: 0/)).toBeInTheDocument();
   });
-  
+  afterAll(() => fetch.mockClear())
+});
+
+describe("When the game ends", () => {
+  beforeEach(() =>
+    jest.spyOn(global, "fetch").mockResolvedValue({
+      json: () => Promise.resolve(pokemonObject),
+    })
+  );
+  test("should be presented with a screen that shows score when timer hits 0", async () => {
+    const guessedPokemon = "Pikachu";
+    jest.useFakeTimers();
+    render(<Pokemon pokemonTrainer={pokemonTrainerObject} />);
+    await screen.findByRole("img");
+    userEvent.type(await screen.findByRole("textbox"), guessedPokemon);
+    userEvent.click(screen.getByRole("button"));
+    await waitFor(() => jest.advanceTimersByTime(60000));
+    expect(screen.getByText(/GAME OVER/)).toBeInTheDocument();
+  });
+
+  afterAll(() => jest.useRealTimers());
 });

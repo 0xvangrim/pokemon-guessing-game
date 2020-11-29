@@ -1,7 +1,11 @@
+@font-face {
+  font-family: 'CinzelDecorative-Black';
+  src: local('CinzelDecorative-Black'), url(./fonts/CinzelDecorative-Black.ttf) format('truetype');
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family:'CinzelDecorative-Black'
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

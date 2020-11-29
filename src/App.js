@@ -1,5 +1,4 @@
 import "./App.css";
-import "fontsource-roboto";
 import React, { useState, useEffect } from "react";
 import Pokemon from "./PokemonPage";
 import TextField from "@material-ui/core/TextField";
@@ -37,6 +36,7 @@ function App() {
             <h1 className="headline">
               Hello Pokémon Trainer!
             </h1>
+            <img src="hiclipart.com.png" alt="pokeball" width="30%"/>
             <form
               className="input-wrapper"
               onSubmit={(e) => {
@@ -55,7 +55,16 @@ function App() {
                 placeholder="E.g. Ash Ketchum"
                 value={value}
                 onChange={handleChange}
+                style={{
+                  backgroundColor: "white"
+              }}
+              InputProps={{
+                  style: {
+                      color: "black"
+                  }
+              }}
               />
+              <div className="button-wrapper">
               <Button
                 color="primary"
                 variant="contained"
@@ -64,6 +73,7 @@ function App() {
               >
                 Let's Go
               </Button>
+              </div>
             </form>
           </div>
         </div>
