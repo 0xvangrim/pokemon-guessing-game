@@ -2,6 +2,8 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "../App";
 
+
+
 describe("When everything is ok", () => {
   beforeEach(() => {
     render(<App />);
@@ -13,7 +15,6 @@ describe("When everything is ok", () => {
     screen.getByAltText("pokeball")
     screen.getByPlaceholderText("E.g. Ash Ketchum")
   });
-
 
 });
 
