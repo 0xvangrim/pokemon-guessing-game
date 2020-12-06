@@ -28,6 +28,7 @@ function Pokemon({ pokemonTrainer }) {
     }
     fetchData();
     return () => isMountedRef.current = false
+       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
