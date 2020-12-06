@@ -21,7 +21,7 @@ describe("When user submits a name", () => {
   beforeEach(() => {
     render(<App />);
   });
-  test("should render the pokemon view", () => {
+  test("should render the pokemon view and register the input", () => {
     const name = "Kenny";
     userEvent.type(screen.getByRole("textbox"), name);
     expect(screen.getByRole("textbox")).toHaveValue(name);

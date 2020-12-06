@@ -1,4 +1,3 @@
-
 export const getPokemon = async (id) => {
   //function that makes the API call and fetches our pokemon
 

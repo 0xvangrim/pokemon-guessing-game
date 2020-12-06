@@ -1,7 +1,7 @@
 import { getPokemon } from "../services/getPokemon";
 
 const pokemonObject = {
-  name: "Pikachu",
+  name: "pikachu",
   sprites: {
     other: {
       "official-artwork": {
@@ -24,7 +24,7 @@ describe.only("makes sure our fetch function works properly", () => {
     expect(pokemonFetcher).toEqual({
       image:
         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-      name: "Pikachu",
+      name: "pikachu",
     });
     expect(fetch).toHaveBeenCalledWith("https://pokeapi.co/api/v2/pokemon/1");
   });

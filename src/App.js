@@ -54,6 +54,7 @@ function App() {
                 variant="filled"
                 placeholder="E.g. Ash Ketchum"
                 value={value}
+                autoFocus
                 onChange={handleChange}
                 style={{
                   backgroundColor: "white"
